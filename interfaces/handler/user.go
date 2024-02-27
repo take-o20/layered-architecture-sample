@@ -7,6 +7,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/take-o20/layered-architecture-sample/config"
+	"github.com/take-o20/layered-architecture-sample/domain"
 
 	"github.com/take-o20/layered-architecture-sample/interfaces/response"
 	"github.com/take-o20/layered-architecture-sample/usecase"
@@ -59,26 +60,32 @@ func (uh userHandler) HandleUserList(writer http.ResponseWriter, request *http.R
 }
 
 func (uh userHandler) HandleUserSignup(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	const successMessage = "created user"
+	const errMessage = "failed to create user"
 	//リクエストボディを取得
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
-		response.Error(writer, http.StatusBadRequest, err, "Invalid Request Body")
+		response.Error(writer, http.StatusBadRequest, err, errMessage)
 		return
 	}
-
-	//リクエストボディのパース
 	var requestBody userSignupRequest
-	json.Unmarshal(body, &requestBody)
-
-	//usecaseの呼び出し
-	err = uh.userUseCase.Insert(config.DB, requestBody.Name, requestBody.Email)
+	err = json.Unmarshal(body, &requestBody)
 	if err != nil {
-		response.Error(writer, http.StatusInternalServerError, err, "Internal Server Error")
+		response.Error(writer, http.StatusInternalServerError, err, errMessage)
 		return
 	}
 
-	// レスポンスに必要な情報を詰めて返却
-	response.JSON(writer, http.StatusOK, "")
+	user, err := uh.userUseCase.Insert(config.DB, requestBody.Name, requestBody.Email)
+	if err != nil {
+		response.Error(writer, http.StatusInternalServerError, err, errMessage)
+		return
+	}
+
+	responseErr := response.UserResponse(writer, http.StatusOK, successMessage, []domain.User{*user})
+	if responseErr != nil {
+		response.Error(writer, http.StatusInternalServerError, err, errMessage)
+		return
+	}
 }
 
 type userSignupRequest struct {

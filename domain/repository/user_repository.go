@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface {
-	Insert(DB *sql.DB, name, email string) error
+	Insert(DB *sql.DB, name, email string) (*domain.User, error)
 	GetByUserID(DB *sql.DB, userID string) (*domain.User, error)
 	List(DB *sql.DB) ([]domain.User, error)
 	Update(DB *sql.DB, userID, name, email string) (*domain.User, error)

@@ -9,7 +9,7 @@ import (
 
 type UserUseCase interface {
 	GetByUserID(DB *sql.DB, userID string) (*domain.User, error)
-	Insert(DB *sql.DB, name, email string) error
+	Insert(DB *sql.DB, name, email string) (*domain.User, error)
 	List(DB *sql.DB) ([]domain.User, error)
 }
 
@@ -34,12 +34,12 @@ func (uu userUseCase) GetByUserID(DB *sql.DB, userID string) (*domain.User, erro
 	return user, nil
 }
 
-func (uu userUseCase) Insert(DB *sql.DB, name, email string) error {
-	err := uu.userRepository.Insert(DB, name, email)
+func (uu userUseCase) Insert(DB *sql.DB, name, email string) (*domain.User, error) {
+	user, err := uu.userRepository.Insert(DB, name, email)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return user, nil
 }
 
 func (uu userUseCase) List(DB *sql.DB) ([]domain.User, error) {

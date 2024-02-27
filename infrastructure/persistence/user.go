@@ -3,6 +3,7 @@ package persistence
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 
 	"github.com/take-o20/layered-architecture-sample/domain"
 	"github.com/take-o20/layered-architecture-sample/domain/repository"
@@ -14,15 +15,26 @@ func NewUserPersistence() repository.UserRepository {
 	return &userPersistence{}
 }
 
-func (up userPersistence) Insert(DB *sql.DB, name, email string) error {
+func (up userPersistence) Insert(DB *sql.DB, name, email string) (*domain.User, error) {
 	stmt, err := DB.Prepare("INSERT INTO users(name, email) VALUES(?, ?)")
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(name, email)
-	return err
+	result, err := stmt.Exec(name, email)
+	if err != nil {
+		return nil, err
+	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	user, err := getUserByUserId(DB, strconv.FormatInt(id, 10))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (up userPersistence) GetByUserID(DB *sql.DB, userID string) (*domain.User, error) {
