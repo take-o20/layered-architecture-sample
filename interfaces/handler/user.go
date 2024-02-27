@@ -15,6 +15,7 @@ import (
 type UserHandler interface {
 	HandleUserGet(http.ResponseWriter, *http.Request, httprouter.Params)
 	HandleUserSignup(http.ResponseWriter, *http.Request, httprouter.Params)
+	HandleUserList(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type userHandler struct {
@@ -28,9 +29,6 @@ func NewUserHandler(uu usecase.UserUseCase) UserHandler {
 }
 
 func (uh userHandler) HandleUserGet(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	// Contextから認証済みのユーザIDを取得
-	// ctx := request.Context()
-	//  todo analyze userID from ctx
 	userID := params.ByName("id")
 
 	//usecaseレイヤを操作して、ユーザデータ取得
@@ -42,6 +40,22 @@ func (uh userHandler) HandleUserGet(writer http.ResponseWriter, request *http.Re
 
 	//レスポンスに必要な情報を詰めて返却
 	response.JSON(writer, http.StatusOK, user)
+}
+func (uh userHandler) HandleUserList(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	const errMessage = "failed to got users"
+	const successMessage = "got users"
+
+	users, err := uh.userUseCase.List(config.DB)
+	if err != nil {
+		response.Error(writer, http.StatusInternalServerError, err, errMessage)
+		return
+	}
+
+	responseErr := response.UserResponse(writer, http.StatusOK, successMessage, users)
+	if responseErr != nil {
+		response.Error(writer, http.StatusInternalServerError, responseErr, errMessage)
+		return
+	}
 }
 
 func (uh userHandler) HandleUserSignup(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
