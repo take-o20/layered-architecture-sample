@@ -19,14 +19,14 @@ func (up userPersistence) Insert(DB *sql.DB, name, email string) error {
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
+
 	_, err = stmt.Exec(name, email)
 	return err
 }
 
 func (up userPersistence) GetByUserID(DB *sql.DB, userID string) (*domain.User, error) {
-	row := DB.QueryRow("SELECT * FROM users WHERE user_id = ?", userID)
-	//row型をgolangで利用できる形にキャストする。
-	return convertToUser(row)
+	return getUserByUserId(DB, userID)
 }
 
 func (up userPersistence) List(DB *sql.DB) ([]domain.User, error) {
@@ -42,11 +42,39 @@ func (up userPersistence) List(DB *sql.DB) ([]domain.User, error) {
 	}
 	return users, nil
 }
+
 func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domain.User, error) {
-	return nil, nil
+	stmt, err := DB.Prepare("UPDATE users SET name=?, email=? where use_id=?")
+	if err != nil {
+		return nil, err
+	}
+	result, err := stmt.Exec(name, email, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+	if rows != 1 {
+		return nil, fmt.Errorf("expected single row affected, got %d rows affected", rows)
+	}
+
+	updatedUser, err := getUserByUserId(DB, userID)
+	if err != nil {
+		return nil, err
+	}
+	return updatedUser, nil
 }
+
 func (up userPersistence) Delete(DB *sql.DB, userID string) (*domain.User, error) {
 	return nil, nil
+}
+
+func getUserByUserId(DB *sql.DB, userID string) (*domain.User, error) {
+	row := DB.QueryRow("SELECT * FROM users WHERE user_id = ?", userID)
+	return convertToUser(row)
 }
 
 func convertToUserList(rows *sql.Rows) ([]domain.User, error) {
