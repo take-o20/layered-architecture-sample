@@ -28,6 +28,10 @@ func (up userPersistence) GetByUserID(DB *sql.DB, userID string) (*domain.User, 
 	return convertToUser(row)
 }
 
+func (up userPersistence) List(DB *sql.DB) ([]domain.User, error)
+func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domain.User, error)
+func (up userPersistence) Delete(DB *sql.DB, userID string) (*domain.User, error)
+
 func convertToUser(row *sql.Row) (*domain.User, error) {
 	user := domain.User{}
 	err := row.Scan(&user.UserID, &user.Name, &user.Email)
