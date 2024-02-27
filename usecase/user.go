@@ -3,7 +3,6 @@ package usecase
 import (
 	"database/sql"
 
-	"github.com/google/uuid"
 	"github.com/take-o20/layered-architecture-sample/domain"
 	"github.com/take-o20/layered-architecture-sample/domain/repository"
 )
@@ -35,17 +34,7 @@ func (uu userUseCase) GetByUserID(DB *sql.DB, userID string) (*domain.User, erro
 }
 
 func (uu userUseCase) Insert(DB *sql.DB, name, email string) error {
-	//本来ならemailのバリデーションをする
-
-	//一意でランダムな文字列を生成する
-	userID, err := uuid.NewRandom() //返り値はuuid型
-	if err != nil {
-		return err
-	}
-
-	//domainを介してinfrastructureで実装した関数を呼び出す。
-	// Persistence（Repository）を呼出
-	err = uu.userRepository.Insert(DB, userID.String(), name, email)
+	err := uu.userRepository.Insert(DB, name, email)
 	if err != nil {
 		return err
 	}

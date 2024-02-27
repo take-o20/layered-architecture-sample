@@ -27,14 +27,14 @@ func NewUserHandler(uu usecase.UserUseCase) UserHandler {
 	}
 }
 
-func (uh userHandler) HandleUserGet(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func (uh userHandler) HandleUserGet(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// Contextから認証済みのユーザIDを取得
 	// ctx := request.Context()
 	//  todo analyze userID from ctx
-	userID := "" // context.GetUserIDFromContext(ctx)
+	userID := params.ByName("id")
 
 	//usecaseレイヤを操作して、ユーザデータ取得
-	user, err := uh.userUseCase.GetByUserID(config.DB, userID) // usecase.UserUsecase{}.SelectByPrimaryKey(config.DB, userID)
+	user, err := uh.userUseCase.GetByUserID(config.DB, userID)
 	if err != nil {
 		response.Error(writer, http.StatusInternalServerError, err, "Internal Server Error")
 		return
