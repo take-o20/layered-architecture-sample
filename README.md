@@ -21,7 +21,7 @@
         "message": "got users",
         "users": [
             {
-                "user_id": $ID,
+                "user_id": "$ID",
                 "name": "$NAME",
                 "email": "$EMAIL"
             },{
@@ -52,7 +52,7 @@
         "message": "got user",
         "users": [
             {
-                "user_id": $ID,
+                "user_id": "$ID",
                 "name": "$NAME",
                 "email": "$EMAIL"
             },
@@ -80,7 +80,7 @@
     {
         "message": "created user",
         "users": [{
-            "use_id": $ID,
+            "use_id": "$ID",
             "name": "$NAME",
             "email": "$EMAIL"
         }]
@@ -111,7 +111,7 @@
     {
         "message": "updated user",
         "users": [{
-            "user_id": $ID,
+            "user_id": "$ID",
             "name": "new-name",
             "email": "new-email"
         }]
@@ -136,7 +136,7 @@
     {
         "message": "delete user",
         "users": [{
-            "user_id": $ID,
+            "user_id": "$ID",
             "name": "$NAME",
             "email": "$EMAIL"
         }]
