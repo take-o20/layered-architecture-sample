@@ -31,8 +31,9 @@ func main() {
 
 	//ルーティングの設定
 	router := httprouter.New()
-	router.GET("/api/v2/get", userHandler.HandleUserGet)
-	router.POST("/api/v2/signup", userHandler.HandleUserSignup)
+	router.GET("/api/v2/users/:id", userHandler.HandleUserGet)
+	router.GET("/api/v2/users", userHandler.HandleUserList)
+	router.POST("/api/v2/users", userHandler.HandleUserSignup)
 
 	// サーバ起動
 	fmt.Println("Server Running at http://localhost:8080")
