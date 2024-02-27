@@ -2,19 +2,17 @@
 
 
 ## ADR
+| HTTP REQUEST METHOD | URI | 処理 |
+| :--- | :--- | :--- |
+| GET | /api/v1/user | 全てのユーザーの情報を返す |
+| GET | /api/v1/user/{user_id} | ユーザーの情報を返す |
+| POST| /api/v1/user | ユーザーを作成する |
+| PATCH or PUT| /api/v1/user/{user_id} | ユーザーの情報を更新する |
+| DELETE| /api/v1/user | ユーザーを削除する |
 
 ### User
 
-URI
-```
-/api/v1/user
-```
-
-#### GET
-* url
-    ```
-    /api/v1/user?user_id
-    ```
+#### GET `/api/v1/user`
 * request body
     * none
 * response body
@@ -23,11 +21,11 @@ URI
         "message": "got users",
         "users": [
             {
-                "user_id": "$ID",
+                "user_id": $ID,
                 "name": "$NAME",
                 "email": "$EMAIL"
             },{
-                "user_id": "$ID",
+                "user_id": 2,
                 "name": "$NAME",
                 "email": "$EMAIL"
             },
@@ -42,19 +40,19 @@ URI
         ```
 
 
-#### GET with parameter
-* parameter
+#### GET `/api/v1/user/{user_id}`
+* uri example
     ```
-    /api/v1/user?user_id
+    /api/v1/user/1
     ```
 * request body
     * none
 * response body
     ```json
-        "message": "get all users",
+        "message": "got user",
         "users": [
             {
-                "user_id": "$ID",
+                "user_id": $ID,
                 "name": "$NAME",
                 "email": "$EMAIL"
             },
@@ -68,7 +66,7 @@ URI
         ```
 
 
-#### POST
+#### POST `/api/v1/user`
 
 * request body
     ```json
@@ -80,10 +78,11 @@ URI
 * response
     ```json
     {
-        "message": "create user",
+        "message": "created user",
         "users": [{
-            "name": "name",
-            "email": "email"
+            "use_id": $ID,
+            "name": "$NAME",
+            "email": "$EMAIL"
         }]
     }
     ```
@@ -95,10 +94,10 @@ URI
         ```
 
 
-#### PUT or PATCH
-* parameter
+#### PUT or PATCH `/api/v1/user/{user_id}`
+* uri example
     ```
-    /api/v1/user?user_id
+    /api/v1/user/1
     ```
 * request body
     ```json
@@ -110,12 +109,12 @@ URI
 * response
     ```json
     {
-        "message": "update user",
-        "users": []{
-            "id": "id",
-            "name": "name",
-            "email": "email"
-        }
+        "message": "updated user",
+        "users": [{
+            "user_id": $ID,
+            "name": "new-name",
+            "email": "new-email"
+        }]
     }
     ```
     * error case
@@ -126,9 +125,9 @@ URI
         ```
 
 #### DELETE
-* parameter
+* uri
     ```
-    /api/v1/user?user_id
+    /api/v1/user/{user_id}
     ```
 * request body
     * none
@@ -136,11 +135,11 @@ URI
     ```json
     {
         "message": "delete user",
-        "users": []{
-            "id": "id",
-            "name": "name",
-            "email": "email"
-        }
+        "users": [{
+            "user_id": $ID,
+            "name": "$NAME",
+            "email": "$EMAIL"
+        }]
     }
     ```
     * error case
