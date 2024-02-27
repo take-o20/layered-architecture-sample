@@ -33,7 +33,7 @@ func main() {
 	router := httprouter.New()
 	router.GET("/api/v2/users/:id", userHandler.HandleUserGet)
 	router.GET("/api/v2/users", userHandler.HandleUserList)
-	router.POST("/api/v2/users", userHandler.HandleUserSignup)
+	router.POST("/api/v2/users", userHandler.HandleUserCreate)
 
 	// サーバ起動
 	fmt.Println("Server Running at http://localhost:8080")

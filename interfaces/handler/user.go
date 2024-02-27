@@ -15,7 +15,7 @@ import (
 
 type UserHandler interface {
 	HandleUserGet(http.ResponseWriter, *http.Request, httprouter.Params)
-	HandleUserSignup(http.ResponseWriter, *http.Request, httprouter.Params)
+	HandleUserCreate(http.ResponseWriter, *http.Request, httprouter.Params)
 	HandleUserList(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
@@ -59,7 +59,7 @@ func (uh userHandler) HandleUserList(writer http.ResponseWriter, request *http.R
 	}
 }
 
-func (uh userHandler) HandleUserSignup(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func (uh userHandler) HandleUserCreate(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	const successMessage = "created user"
 	const errMessage = "failed to create user"
 	//リクエストボディを取得
