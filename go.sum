@@ -1,12 +1,6 @@
 github.com/go-sql-driver/mysql v1.7.1 h1:lUIinVbN1DY0xBg0eMOzmmtGoHwWBbvnWubQUrtU8EI=
 github.com/go-sql-driver/mysql v1.7.1/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=
-github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
-github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
-github.com/nahojer/httprouter v1.0.4 h1:jFv6nhY+8jSfs3L+gQFWDhidfEcb7szcwD8Tm+vbvWg=
-github.com/nahojer/httprouter v1.0.4/go.mod h1:q7WULmACLSHqRbpR8CRcIMKYUeKvybW1JdZTDQu6Q8w=
-github.com/nahojer/routes v0.0.2 h1:sWkO3gYGV4vrFMRykB9QWvoLLwMJjNROLTS/UVCPK+o=
-github.com/nahojer/routes v0.0.2/go.mod h1:0B3jcNH1MKfMcWL1MNjxlOnB9Nyt2Z2x9LH5Bv+Ukx8=
