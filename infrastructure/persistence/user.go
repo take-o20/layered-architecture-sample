@@ -42,8 +42,12 @@ func (up userPersistence) List(DB *sql.DB) ([]domain.User, error) {
 	}
 	return users, nil
 }
-func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domain.User, error)
-func (up userPersistence) Delete(DB *sql.DB, userID string) (*domain.User, error)
+func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domain.User, error) {
+	return nil, nil
+}
+func (up userPersistence) Delete(DB *sql.DB, userID string) (*domain.User, error) {
+	return nil, nil
+}
 
 func convertToUserList(rows *sql.Rows) ([]domain.User, error) {
 	users := []domain.User{}
