@@ -52,10 +52,9 @@ func Init() {
 
 func migrateDB(db *sql.DB) error {
 	createVotes := `CREATE TABLE IF NOT EXISTS users (
-		id SERIAL NOT NULL,
+		user_id SERIAL PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
-		email VARCHAR(255) NOT NULL,
-		PRIMARY KEY (id)
+		email VARCHAR(255) NOT NULL
 	);`
 	_, err := db.Exec(createVotes)
 	return err
