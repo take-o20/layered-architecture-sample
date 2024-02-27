@@ -10,6 +10,7 @@ import (
 type UserUseCase interface {
 	GetByUserID(DB *sql.DB, userID string) (*domain.User, error)
 	Insert(DB *sql.DB, name, email string) error
+	List(DB *sql.DB) ([]domain.User, error)
 }
 
 type userUseCase struct {
@@ -39,4 +40,12 @@ func (uu userUseCase) Insert(DB *sql.DB, name, email string) error {
 		return err
 	}
 	return nil
+}
+
+func (uu userUseCase) List(DB *sql.DB) ([]domain.User, error) {
+	users, err := uu.userRepository.List(DB)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
