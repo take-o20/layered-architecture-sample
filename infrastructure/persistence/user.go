@@ -56,7 +56,7 @@ func (up userPersistence) List(DB *sql.DB) ([]domain.User, error) {
 }
 
 func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domain.User, error) {
-	stmt, err := DB.Prepare("UPDATE users SET name=?, email=? where use_id=?")
+	stmt, err := DB.Prepare("UPDATE users SET name=?, email=? where user_id=?")
 	if err != nil {
 		return nil, err
 	}

@@ -80,7 +80,7 @@
     {
         "message": "created user",
         "users": [{
-            "use_id": "$ID",
+            "user_id": "$ID",
             "name": "$NAME",
             "email": "$EMAIL"
         }]

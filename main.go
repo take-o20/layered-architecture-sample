@@ -34,6 +34,7 @@ func main() {
 	router.GET("/api/v2/users/:id", userHandler.HandleUserGet)
 	router.GET("/api/v2/users", userHandler.HandleUserList)
 	router.POST("/api/v2/users", userHandler.HandleUserCreate)
+	router.PATCH("/api/v2/users/:id", userHandler.HandleUserUpdate)
 
 	// サーバ起動
 	fmt.Println("Server Running at http://localhost:8080")
