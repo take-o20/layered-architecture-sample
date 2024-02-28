@@ -1,0 +1,31 @@
+###
+GET http://localhost:8080/api/v2/users/1
+Host: localhost:8080
+
+###
+GET http://localhost:8080/api/v2/users
+Host: localhost:8080
+
+###
+POST  http://localhost:8080/api/v2/users
+Content-Type: application/json
+Host: localhost:8080
+
+{
+    "email": "test@test.com",
+    "name": "test"
+}
+
+###
+PATCH   http://localhost:8080/api/v2/users/1
+Content-Type: application/json
+Host: localhost:8080
+
+{
+    "email": "test3@test3.com",
+    "name": "test3"
+}
+
+###
+DELETE    http://localhost:8080/api/v2/users/6
+Host: localhost:8080
