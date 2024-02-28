@@ -134,7 +134,7 @@
 * response
     ```json
     {
-        "message": "delete user",
+        "message": "deleted user",
         "users": [{
             "user_id": "$ID",
             "name": "$NAME",

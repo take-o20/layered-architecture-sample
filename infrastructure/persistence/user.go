@@ -81,7 +81,30 @@ func (up userPersistence) Update(DB *sql.DB, userID, name, email string) (*domai
 }
 
 func (up userPersistence) Delete(DB *sql.DB, userID string) (*domain.User, error) {
-	return nil, nil
+	user, err := getUserByUserId(DB, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	stmt, err := DB.Prepare("DELETE from users where user_id=?")
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := stmt.Exec(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+	if rows != 1 {
+		return nil, fmt.Errorf("expected single row affected, got %d rows affected", rows)
+	}
+
+	return user, nil
 }
 
 func getUserByUserId(DB *sql.DB, userID string) (*domain.User, error) {

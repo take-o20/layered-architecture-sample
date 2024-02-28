@@ -12,6 +12,7 @@ type UserUseCase interface {
 	Insert(DB *sql.DB, name, email string) (*domain.User, error)
 	List(DB *sql.DB) ([]domain.User, error)
 	Update(DB *sql.DB, userID, name, email string) (*domain.User, error)
+	Delete(DB *sql.DB, userID string) (*domain.User, error)
 }
 
 type userUseCase struct {
@@ -53,6 +54,14 @@ func (uu userUseCase) List(DB *sql.DB) ([]domain.User, error) {
 
 func (uu userUseCase) Update(DB *sql.DB, userID, name, email string) (*domain.User, error) {
 	user, err := uu.userRepository.Update(DB, userID, name, email)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (uu userUseCase) Delete(DB *sql.DB, userID string) (*domain.User, error) {
+	user, err := uu.userRepository.Delete(DB, userID)
 	if err != nil {
 		return nil, err
 	}

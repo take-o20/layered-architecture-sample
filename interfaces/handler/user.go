@@ -18,6 +18,7 @@ type UserHandler interface {
 	HandleUserCreate(http.ResponseWriter, *http.Request, httprouter.Params)
 	HandleUserList(http.ResponseWriter, *http.Request, httprouter.Params)
 	HandleUserUpdate(http.ResponseWriter, *http.Request, httprouter.Params)
+	HandleUserDelete(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type userHandler struct {
@@ -105,7 +106,6 @@ func (uh userHandler) HandleUserUpdate(w http.ResponseWriter, request *http.Requ
 
 	userID := params.ByName("id")
 
-	//リクエストボディを取得
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, err, errMessage)
@@ -119,6 +119,25 @@ func (uh userHandler) HandleUserUpdate(w http.ResponseWriter, request *http.Requ
 	}
 
 	user, err := uh.userUseCase.Update(config.DB, userID, requestBody.Name, requestBody.Email)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, err, errMessage)
+		return
+	}
+
+	responseErr := response.UserResponse(w, http.StatusOK, successMessage, []domain.User{*user})
+	if responseErr != nil {
+		response.Error(w, http.StatusInternalServerError, err, errMessage)
+		return
+	}
+}
+
+func (uh userHandler) HandleUserDelete(w http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	const successMessage = "deleted user"
+	const errMessage = "failed to delete user"
+
+	userID := params.ByName("id")
+
+	user, err := uh.userUseCase.Delete(config.DB, userID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, err, errMessage)
 		return
