@@ -36,17 +36,22 @@ func NewUserHandler(uu usecase.UserUseCase) UserHandler {
 }
 
 func (uh userHandler) HandleUserGet(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	const errMessage = "failed to got user"
+	const successMessage = "got user"
+
 	userID := params.ByName("id")
 
-	//usecaseレイヤを操作して、ユーザデータ取得
 	user, err := uh.userUseCase.GetByUserID(config.DB, userID)
 	if err != nil {
 		response.Error(writer, http.StatusInternalServerError, err, "Internal Server Error")
 		return
 	}
 
-	//レスポンスに必要な情報を詰めて返却
-	response.JSON(writer, http.StatusOK, user)
+	responseErr := response.UserResponse(writer, http.StatusOK, successMessage, []domain.User{*user})
+	if responseErr != nil {
+		response.Error(writer, http.StatusInternalServerError, responseErr, errMessage)
+		return
+	}
 }
 func (uh userHandler) HandleUserList(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	const errMessage = "failed to got users"
